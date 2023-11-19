@@ -6,9 +6,11 @@ from nbconvert import HTMLExporter
 
 from eyeofjupyter.fs_format import (
     get_new_snapshot_loc,
+    get_project_root,
     get_snapshot_metadatafile,
     get_snapshot_report_file,
 )
+from eyeofjupyter.snapshot_browser import start_browser
 
 
 @click.group()
@@ -17,9 +19,10 @@ def cli():
 
 
 @cli.command()
-@click.argument("ipynbfile", type=click.Path(exists=True, readable=True))
+@click.argument(
+    "ipynbfile", type=click.Path(exists=True, readable=True, resolve_path=True)
+)
 def take_snapshot(ipynbfile):
-    ipynbfile = f"{os.getcwd()}/{ipynbfile}"
     new_snapshot_version_loc = get_new_snapshot_loc(ipynbfile)
     os.makedirs(new_snapshot_version_loc)
 
@@ -32,6 +35,10 @@ def take_snapshot(ipynbfile):
         json.dump(metadata, f)
 
 
-@cli.command
-def browse():
-    pass
+@cli.command()
+@click.option("--path", type=click.Path(resolve_path=True))
+def browse(path):
+    if path is None:
+        path = f"{get_project_root()}/.eoj"
+    start_browser(path)
+    click.clear()
