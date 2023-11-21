@@ -23,7 +23,7 @@ def cli():
     "ipynbfile", type=click.Path(exists=True, readable=True, resolve_path=True)
 )
 def take_snapshot(ipynbfile):
-    new_snapshot_version_loc = get_new_snapshot_loc(ipynbfile)
+    new_snapshot_version_loc = get_new_snapshot_loc(ipynbfile, get_project_root())
     os.makedirs(new_snapshot_version_loc)
 
     he = HTMLExporter()

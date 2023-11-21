@@ -1,0 +1,2 @@
+class NoProject(BaseException):
+    pass
