@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from eyeofjupyter.config import CONFIG_FILE_NAME, SNAPSHOTS_DIR
 from eyeofjupyter.errors import NoProject
@@ -16,19 +17,7 @@ def get_new_snapshot_loc(ipynbfile_path, project_root):
     rel_ipynbfile_path = os.path.relpath(ipynbfile_path, project_root)
     snapshots_base_dir = f"{project_root}/{SNAPSHOTS_DIR}/{rel_ipynbfile_path}/"
     os.makedirs(snapshots_base_dir, exist_ok=True)
-    snapshot_base_dir_contents = os.listdir(snapshots_base_dir)
-    snapshot_version = 0
-    if len(snapshot_base_dir_contents) > 0:
-        snapshot_version = (
-            max(
-                [
-                    int(e)
-                    for e in snapshot_base_dir_contents
-                    if os.path.isdir(f"{snapshots_base_dir}{e}")
-                ]
-            )
-            + 1
-        )
+    snapshot_version = datetime.now().timestamp()
     return f"{snapshots_base_dir}{snapshot_version}/"
 
 
