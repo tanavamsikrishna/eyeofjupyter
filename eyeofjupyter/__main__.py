@@ -1,7 +1,7 @@
 from sys import stderr
 from eyeofjupyter import config
 from eyeofjupyter.commandline import cli
-from eyeofjupyter.errors import NoProject
+from eyeofjupyter.errors import NoProject, NoSnapShotFile
 
 
 def config_exception_handling():
@@ -13,6 +13,9 @@ def config_exception_handling():
                 f"No project description file `{config.CONFIG_FILE_NAME}` found",
                 file=stderr,
             )
+            sys.exit(1)
+        elif exc_cls == NoSnapShotFile:
+            print(f"No relevant snapshot found in `{exc_cls.folder}`")
             sys.exit(1)
         else:
             sys.__excepthook__(exc_cls, exc_obj, traceback)
