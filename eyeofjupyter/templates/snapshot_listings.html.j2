@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<head>
+    <style>
+        .main {
+            margin: auto;
+            width: fit-content;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        function get_snapshot(file) {
+
+        }
+    </script>
+</head>
+
+<body>
+    <div class="main">
+        {% for item in snapshots %}
+        <a href="/snapshot/{{item}}">{{item}}</a>
+        <br />
+        {% endfor %}
+    </div>
+</body>

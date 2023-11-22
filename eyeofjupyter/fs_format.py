@@ -1,6 +1,6 @@
 from datetime import datetime
 import os
-from eyeofjupyter.config import CONFIG_FILE_NAME, SNAPSHOTS_DIR
+from eyeofjupyter.config import CONFIG_FILE_NAME, METADATA_FILE, SNAPSHOTS_DIR
 from eyeofjupyter.errors import NoProject
 
 
@@ -21,9 +21,9 @@ def get_new_snapshot_loc(ipynbfile_path, project_root):
     return f"{snapshots_base_dir}{snapshot_version}/"
 
 
-def get_snapshot_report_file(snapshot_version):
-    return f"{snapshot_version}report.html"
-
-
 def get_snapshot_metadatafile(snapshot_version):
-    return f"{snapshot_version}metadata.json"
+    return f"{snapshot_version}{METADATA_FILE}"
+
+
+def is_snapshot_folder(path):
+    return METADATA_FILE in os.listdir(path)

@@ -1,35 +1,61 @@
 import os
+from flask import Flask, render_template
+from jinja2 import DictLoader
+from nbconvert import HTMLExporter
 
-import click
+from eyeofjupyter.fs_format import is_snapshot_folder
+from eyeofjupyter.key_value_cache import KeyValueCache
 
 
-def start_browser(path):
-    selected_file_index = 0
-    while True:
-        click.clear()
-        click.echo(click.style(path, fg="white", bg="bright_black", bold=True))
-        click.echo()
-        if os.path.isfile(path):
-            print(path)
-            click.launch(path)
-            return
-        files = os.listdir(path)
-        for i, f in enumerate(files):
-            msg = f
-            if i == selected_file_index:
-                msg = click.style(msg, fg="blue", bold=True)
-            click.echo(msg)
-        inp = click.getchar().encode("utf-8")
-        match inp:
-            case b"\x1b[A":
-                selected_file_index = (selected_file_index - 1) % len(files)
-            case b"\x1b[B":
-                selected_file_index = (selected_file_index + 1) % len(files)
-            case b"\x1b[C":
-                path = f"{path}/{files[selected_file_index]}"
-                selected_file_index = 0
-            case b"\x1b[D":
-                path = os.path.dirname(path)
-            case _:
-                print(inp)
-                break
+def get_snapshots(path):
+    if not os.path.isdir(path):
+        return []
+    if is_snapshot_folder(path):
+        return [path]
+    return [i for e in os.listdir(path) for i in get_snapshots(f"{path}{e}/")]
+
+
+def _create_ipynb_to_html_exporter():
+    jinja_templates_folder = "static/"
+    templates = {}
+    for file in os.listdir(jinja_templates_folder):
+        with open(f"{jinja_templates_folder}{file}") as f:
+            templates[file] = f.read()
+    dl = DictLoader(templates)
+
+    ipynb_to_html_exporter = HTMLExporter(
+        extra_loaders=[dl], template_file="report_template.html.j2"
+    )
+    ipynb_to_html_exporter.exclude_input_prompt = True
+    return ipynb_to_html_exporter
+
+
+def start_browser(root):
+    app = Flask(__name__)
+
+    ipynb_to_html_exporter = _create_ipynb_to_html_exporter()
+    snapshot_html_cache = KeyValueCache()
+
+    def get_html_preview(snapshot):
+        if snapshot in snapshot_html_cache:
+            return snapshot_html_cache[snapshot]
+
+        (body, _metadata) = ipynb_to_html_exporter.from_filename(
+            f"{root}{snapshot}/snapshot.ipynb"
+        )
+
+        snapshot_html_cache[snapshot] = body
+        return body
+
+    @app.route("/snapshots")
+    def list_snapshots():
+        snapshots = get_snapshots(root)
+        snapshots = [os.path.relpath(e, root) for e in snapshots]
+        return render_template("snapshot_listings.html.j2", snapshots=snapshots)
+
+    @app.route("/snapshot/<path:snapshot>")
+    def get_snapshot(snapshot):
+        return get_html_preview(snapshot)
+
+    # waitress.serve(app)
+    app.run(debug=True)
