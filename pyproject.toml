@@ -20,4 +20,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-ej = "eyeofjupyter.__main__:main"
+eoj = "eyeofjupyter.__main__:main"

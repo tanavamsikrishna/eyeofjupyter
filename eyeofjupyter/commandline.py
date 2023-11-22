@@ -1,14 +1,14 @@
 from datetime import datetime
-import json
-import os
+from json import dump as json_dump
+from os import makedirs
 import click
-from nbconvert import HTMLExporter
+from shutil import copyfile
+from os.path import basename
 
 from eyeofjupyter.fs_format import (
     get_new_snapshot_loc,
     get_project_root,
     get_snapshot_metadatafile,
-    get_snapshot_report_file,
 )
 from eyeofjupyter.snapshot_browser import start_browser
 
@@ -24,21 +24,19 @@ def cli():
 )
 def take_snapshot(ipynbfile):
     new_snapshot_version_loc = get_new_snapshot_loc(ipynbfile, get_project_root())
-    os.makedirs(new_snapshot_version_loc)
+    makedirs(new_snapshot_version_loc)
 
-    he = HTMLExporter()
-    (body, _resources) = he.from_file(ipynbfile)
+    copyfile(ipynbfile, f"{new_snapshot_version_loc}{basename(ipynbfile)}")
+
     metadata = {"snapshot datetime": datetime.now().isoformat()}
-    with open(get_snapshot_report_file(new_snapshot_version_loc), "w+") as f:
-        f.write(body)
     with open(get_snapshot_metadatafile(new_snapshot_version_loc), "w+") as f:
-        json.dump(metadata, f)
+        json_dump(metadata, f)
 
 
 @cli.command()
 @click.option("--path", type=click.Path(resolve_path=True))
 def browse(path):
     if path is None:
-        path = f"{get_project_root()}/.eoj"
+        path = f"{get_project_root()}.eoj"
     start_browser(path)
     click.clear()
