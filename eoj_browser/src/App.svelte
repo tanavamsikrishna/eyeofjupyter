@@ -10,7 +10,7 @@
 <main>
     <h3>Snapshots</h3>
     {#each snapshots as snapshot}
-        <a href='snapshot/{snapshot}'>{snapshot}</a>
+        <a href="snapshot/{snapshot}">{snapshot}</a>
         <br />
     {/each}
 </main>
