@@ -1,9 +1,11 @@
 from importlib.resources import files
 import os
-from flask import Flask, render_template
+import webbrowser
+from flask import Flask
 from jinja2 import DictLoader
 from nbconvert import HTMLExporter
 import waitress
+from eyeofjupyter import config
 from eyeofjupyter.errors import NoSnapShotFile
 
 from eyeofjupyter.fs_format import is_snapshot_folder
@@ -62,11 +64,22 @@ def start_browser(root):
     def list_snapshots():
         snapshots = get_snapshots(root)
         snapshots = [os.path.relpath(e, root) for e in snapshots]
-        return render_template("snapshot_listings.html.j2", snapshots=snapshots)
+        return snapshots
 
     @app.route("/snapshot/<path:snapshot>")
     def get_snapshot(snapshot):
         return get_html_preview(snapshot)
 
-    waitress.serve(app)
-    # app.run(debug=True)
+    @app.route("/")
+    @app.route("/<path:file>")
+    def static_file_server(file=None):
+        if file is None:
+            file = "index.html"
+        return app.send_static_file(file)
+
+    webbrowser.open_new_tab(f"http://localhost:{config.PORT}")
+
+    if config.DEBUG:
+        app.run(debug=True, port=config.PORT)
+    else:
+        waitress.serve(app, port=config.PORT)
