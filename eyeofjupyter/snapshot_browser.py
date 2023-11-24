@@ -12,12 +12,18 @@ from eyeofjupyter.fs_format import is_snapshot_folder
 from eyeofjupyter.key_value_cache import KeyValueCache
 
 
-def get_snapshots(path):
+def list_snapshotted_files(path):
     if not os.path.isdir(path):
         return []
-    if is_snapshot_folder(path):
+    if len(sub_dirs := os.listdir(path)) == 0:
+        return []
+    if is_snapshot_folder(f"{path}{sub_dirs[0]}"):
         return [path]
-    return [i for e in os.listdir(path) for i in get_snapshots(f"{path}{e}/")]
+    return [i for e in os.listdir(path) for i in list_snapshotted_files(f"{path}{e}/")]
+
+
+def list_file_versions(path):
+    return os.listdir(path)
 
 
 def _create_ipynb_to_html_exporter():
@@ -65,11 +71,16 @@ def start_browser(root):
         snapshot_html_cache[snapshot] = body
         return body
 
-    @app.route("/snapshots")
+    @app.route("/list/files")
     def list_snapshots():
-        snapshots = get_snapshots(root)
+        snapshots = list_snapshotted_files(root)
         snapshots = [os.path.relpath(e, root) for e in snapshots]
         return snapshots
+
+    @app.route("/list/versions/<path:file>")
+    def list_versions(file):
+        versions = list_file_versions(f"{root}{file}")
+        return versions
 
     @app.route("/snapshot/<path:snapshot>")
     def get_snapshot(snapshot):
