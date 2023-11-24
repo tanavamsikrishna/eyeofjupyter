@@ -39,11 +39,16 @@ def _create_ipynb_to_html_exporter():
     return ipynb_to_html_exporter
 
 
+def get_static_folder():
+    return str(files("eyeofjupyter").joinpath("static"))
+
+
 def start_browser(root):
     app = Flask(__name__)
 
     ipynb_to_html_exporter = _create_ipynb_to_html_exporter()
     snapshot_html_cache = KeyValueCache()
+    app.static_folder = get_static_folder()
 
     def get_html_preview(snapshot):
         if snapshot in snapshot_html_cache:
