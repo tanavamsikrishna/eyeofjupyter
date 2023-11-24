@@ -6,7 +6,7 @@ import { MockMethod } from 'vite-plugin-mock'
 
 export default [
     {
-        url: '/snapshots',
+        url: '/snapshots/files',
         method: 'get',
         response: () => {
             return [
@@ -20,5 +20,19 @@ export default [
             ]
         },
     },
+    {
+        url: '/snapshots/versions/test/test.ipynb/1700662570.843829',
+        method: 'get',
+        response: () => {
+            return ["0", "1"]
+        },
+    },
+    {
+        url: '/snapshots/versions/test/test.ipynb/1700662572.585462',
+        method: 'get',
+        response: () => {
+            return ["x", "y"]
+        },
+    }
 
 ] as MockMethod[]
