@@ -2,7 +2,6 @@ from importlib.resources import files
 import os
 import webbrowser
 from flask import Flask
-from jinja2 import DictLoader
 from nbconvert import HTMLExporter
 import waitress
 from eyeofjupyter import config
@@ -27,21 +26,12 @@ def list_file_versions(path):
 
 
 def _create_ipynb_to_html_exporter():
-    jinja_templates_folder = str(
-        files("eyeofjupyter").joinpath("templates").joinpath("nbconvert")
-    )
-    jinja_templates_folder = f"{jinja_templates_folder}/"
-
-    templates = {}
-    for file in os.listdir(jinja_templates_folder):
-        with open(f"{jinja_templates_folder}{file}") as f:
-            templates[file] = f.read()
-    dl = DictLoader(templates)
-
+    jinja_templates_folder = str(files("eyeofjupyter").joinpath("nbconvert_templates"))
     ipynb_to_html_exporter = HTMLExporter(
-        extra_loaders=[dl], template_file="report_template.html.j2"
+        template_name="default", extra_template_basedirs=jinja_templates_folder
     )
     ipynb_to_html_exporter.exclude_input_prompt = True
+    ipynb_to_html_exporter.sanitize_html
     return ipynb_to_html_exporter
 
 
