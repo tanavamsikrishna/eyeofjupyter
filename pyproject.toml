@@ -16,6 +16,7 @@ waitress = "^2.1.2"
 ipykernel = "^6.26.0"
 pytest = "^7.4.3"
 ipython = "^8.18.0"
+matplotlib = "^3.8.2"
 
 [build-system]
 requires = ["poetry-core"]

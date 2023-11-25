@@ -39,4 +39,3 @@ def browse(path):
     if path is None:
         path = f"{get_project_root()}{SNAPSHOTS_DIR}/"
     start_browser(path)
-    click.clear()

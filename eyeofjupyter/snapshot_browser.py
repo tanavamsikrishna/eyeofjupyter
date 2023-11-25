@@ -50,7 +50,9 @@ def start_browser(root):
         if snapshot in snapshot_html_cache:
             return snapshot_html_cache[snapshot]
 
-        if os.path.exists(snapshot_file := f"{root}{snapshot}/snapshot.ipynb"):
+        if os.path.exists(
+            snapshot_file := f"{root}{snapshot}/{config.SNAPSHOT_FILE_NAME}"
+        ):
             (body, _metadata) = ipynb_to_html_exporter.from_filename(snapshot_file)
         elif os.path.exists(snapshot_file := f"{root}{snapshot}/report.html"):
             with open(snapshot_file) as f:
@@ -62,15 +64,15 @@ def start_browser(root):
         return body
 
     @app.route("/list/files")
-    def list_snapshots():
-        snapshots = list_snapshotted_files(root)
-        snapshots = [os.path.relpath(e, root) for e in snapshots]
-        return snapshots
+    def list_files():
+        files = list_snapshotted_files(root)
+        files = [os.path.relpath(e, root) for e in files]
+        return sorted(files)
 
     @app.route("/list/versions/<path:file>")
     def list_versions(file):
         versions = list_file_versions(f"{root}{file}")
-        return versions
+        return sorted(versions, reverse=True)
 
     @app.route("/snapshot/<path:snapshot>")
     def get_snapshot(snapshot):
