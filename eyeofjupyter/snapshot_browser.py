@@ -22,7 +22,7 @@ def list_snapshotted_files(path):
 
 
 def list_file_versions(path):
-    return os.listdir(path)
+    return [float(e) for e in os.listdir(path)]
 
 
 def _create_ipynb_to_html_exporter():
