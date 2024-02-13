@@ -33,7 +33,7 @@
 
 {#if versions.length > 0}
     <Listgroup active items={versions} let:item>
-        {item.name}
+        {new Date(item.name * 1000)}
     </Listgroup>
 {/if}
 
