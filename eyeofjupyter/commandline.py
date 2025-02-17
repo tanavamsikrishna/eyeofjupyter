@@ -27,8 +27,9 @@ def take_snapshot(ipynbfile):
     makedirs(new_snapshot_version_loc)
 
     copyfile(ipynbfile, f"{new_snapshot_version_loc}{SNAPSHOT_FILE_NAME}")
+    comment = click.prompt("Comment")
 
-    metadata = {"snapshot datetime": datetime.now().isoformat()}
+    metadata = {"snapshot datetime": datetime.now().isoformat(), "comment": comment}
     with open(get_snapshot_metadatafile(new_snapshot_version_loc), "w+") as f:
         json_dump(metadata, f)
 

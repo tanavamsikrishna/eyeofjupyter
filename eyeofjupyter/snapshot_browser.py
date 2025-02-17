@@ -1,5 +1,10 @@
+from dataclasses import dataclass
+from datetime import datetime
+from importlib import metadata
 from importlib.resources import files
+import json
 import os
+from typing import Optional, Union
 import webbrowser
 from flask import Flask
 from nbconvert import HTMLExporter
@@ -21,8 +26,25 @@ def list_snapshotted_files(path):
     return [i for e in os.listdir(path) for i in list_snapshotted_files(f"{path}{e}/")]
 
 
-def list_file_versions(path):
-    return [float(e) for e in os.listdir(path)]
+@dataclass
+class FileVersionDetails:
+    file_name: str
+    snapshot_datetime: datetime
+    comment: Optional[str]
+
+
+def get_file_versions_details(path):
+    def get_file_version_details(file):
+        metadata_file = os.path.join(path, file, config.METADATA_FILE)
+        with open(metadata_file) as f:
+            metadata = json.load(f)
+            return FileVersionDetails(
+                file_name=file,
+                snapshot_datetime=datetime.fromisoformat(metadata["snapshot datetime"]),
+                comment=metadata["comment"] if "comment" in metadata else None,
+            )
+
+    return [get_file_version_details(e) for e in os.listdir(path)]
 
 
 def _create_ipynb_to_html_exporter():
@@ -71,8 +93,9 @@ def start_browser(root):
 
     @app.route("/list/versions/<path:file>")
     def list_versions(file):
-        versions = list_file_versions(f"{root}{file}")
-        return sorted(versions, reverse=True)
+        versions = get_file_versions_details(os.path.join(root, file))
+        versions.sort(key=lambda e: e.snapshot_datetime, reverse=True)
+        return versions
 
     @app.route("/snapshot/<path:snapshot>")
     def get_snapshot(snapshot):
