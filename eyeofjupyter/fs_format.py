@@ -1,5 +1,6 @@
-from datetime import datetime
 import os
+from datetime import datetime
+
 from eyeofjupyter.config import CONFIG_FILE_NAME, METADATA_FILE, SNAPSHOTS_DIR
 from eyeofjupyter.errors import NoProject
 

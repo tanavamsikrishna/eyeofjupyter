@@ -1,17 +1,17 @@
-from dataclasses import dataclass
-from datetime import datetime
-from importlib import metadata
-from importlib.resources import files
 import json
 import os
-from typing import Optional, Union
 import webbrowser
+from dataclasses import dataclass
+from datetime import datetime
+from importlib.resources import files
+from typing import Optional
+
+import waitress
 from flask import Flask
 from nbconvert import HTMLExporter
-import waitress
+
 from eyeofjupyter import config
 from eyeofjupyter.errors import NoSnapShotFile
-
 from eyeofjupyter.fs_format import is_snapshot_folder
 from eyeofjupyter.key_value_cache import KeyValueCache
 

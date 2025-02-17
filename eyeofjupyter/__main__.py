@@ -1,4 +1,5 @@
 from sys import stderr
+
 from eyeofjupyter import config
 from eyeofjupyter.commandline import cli
 from eyeofjupyter.errors import NoProject, NoSnapShotFile

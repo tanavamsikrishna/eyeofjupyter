@@ -1,10 +1,11 @@
 from datetime import datetime
 from json import dump as json_dump
 from os import makedirs
-import click
 from shutil import copyfile
-from eyeofjupyter.config import SNAPSHOT_FILE_NAME, SNAPSHOTS_DIR
 
+import click
+
+from eyeofjupyter.config import SNAPSHOT_FILE_NAME, SNAPSHOTS_DIR
 from eyeofjupyter.fs_format import (
     get_new_snapshot_loc,
     get_project_root,
