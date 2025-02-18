@@ -1,5 +1,6 @@
 import json
 import os
+import subprocess
 import webbrowser
 from dataclasses import dataclass
 from datetime import datetime
@@ -7,7 +8,7 @@ from importlib.resources import files
 from typing import Optional
 
 import waitress
-from flask import Flask
+from flask import Flask, request
 from nbconvert import HTMLExporter
 
 from eyeofjupyter import config
@@ -107,6 +108,18 @@ def start_browser(root):
         if file is None:
             file = "index.html"
         return app.send_static_file(file)
+
+    @app.post("/diff")
+    def diff():
+        data = request.json
+        file_a = os.path.join(
+            config.SNAPSHOTS_DIR, data["baseFile"], data["first"], "snapshot.ipynb"
+        )
+        file_b = os.path.join(
+            config.SNAPSHOTS_DIR, data["baseFile"], data["second"], "snapshot.ipynb"
+        )
+        cp = subprocess.run(["nbdiff-web", file_a, file_b], check=True)
+        return str(cp.returncode == 0)
 
     webbrowser.open_new_tab(f"http://localhost:{config.PORT}")
 

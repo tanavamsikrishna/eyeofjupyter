@@ -15,6 +15,7 @@
         "@sveltejs/vite-plugin-svelte": "^2.5.3",
         "@tsconfig/svelte": "^5.0.4",
         "autoprefixer": "^10.4.20",
+        "dayjs": "^1.11.13",
         "flowbite": "^2.5.2",
         "flowbite-svelte": "^0.44.24",
         "flowbite-svelte-icons": "^1.6.2",
