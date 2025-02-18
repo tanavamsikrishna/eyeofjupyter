@@ -124,8 +124,6 @@ def start_browser(root):
     webbrowser.open_new_tab(f"http://localhost:{config.PORT}")
 
     if config.DEBUG:
-        print("Using debug server")
         app.run(debug=True, port=config.PORT)
     else:
-        print("Using waitress")
         waitress.serve(app, port=config.PORT)
