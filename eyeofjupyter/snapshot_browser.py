@@ -102,13 +102,6 @@ def start_browser(root):
     def get_snapshot(snapshot):
         return get_html_preview(snapshot)
 
-    @app.route("/")
-    @app.route("/<path:file>")
-    def static_file_server(file=None):
-        if file is None:
-            file = "index.html"
-        return app.send_static_file(file)
-
     @app.post("/diff")
     def diff():
         data = request.json
@@ -121,9 +114,18 @@ def start_browser(root):
         cp = subprocess.run(["nbdiff-web", file_a, file_b], check=True)
         return str(cp.returncode == 0)
 
+    @app.route("/")
+    @app.route("/<path:file>")
+    def static_file_server(file=None):
+        if file is None:
+            file = "index.html"
+        return app.send_static_file(file)
+
     webbrowser.open_new_tab(f"http://localhost:{config.PORT}")
 
     if config.DEBUG:
+        print("Using debug server")
         app.run(debug=True, port=config.PORT)
     else:
+        print("Using waitress")
         waitress.serve(app, port=config.PORT)

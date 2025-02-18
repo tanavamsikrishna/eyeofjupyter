@@ -62,11 +62,6 @@
                 first: versionsToDiff[0].file_name,
                 second: versionsToDiff[1].file_name,
             }),
-        }).then(() => {
-            versions = versions.map((e) => {
-                e.checked = false;
-                return e;
-            });
         });
     };
 
