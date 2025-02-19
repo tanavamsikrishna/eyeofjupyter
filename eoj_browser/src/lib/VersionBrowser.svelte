@@ -51,7 +51,9 @@
     function handleDelete() {}
 
     const handleDiff = async () => {
-        const versionsToDiff = versions.filter((e) => e.checked);
+        const versionsToDiff = versions
+            .filter((e) => e.checked)
+            .sort((a, b) => parseFloat(a.file_name) - parseFloat(b.file_name));
         await fetch(`/diff`, {
             method: "POST",
             headers: {
