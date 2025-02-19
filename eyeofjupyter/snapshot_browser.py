@@ -62,7 +62,7 @@ def get_static_folder():
     return str(files("eyeofjupyter").joinpath("static"))
 
 
-def start_browser(root):
+def start_browser(snapshots_root_dir):
     app = Flask(__name__)
 
     ipynb_to_html_exporter = _create_ipynb_to_html_exporter()
@@ -74,27 +74,30 @@ def start_browser(root):
             return snapshot_html_cache[snapshot]
 
         if os.path.exists(
-            snapshot_file := f"{root}{snapshot}/{config.SNAPSHOT_FILE_NAME}"
+            snapshot_file
+            := f"{snapshots_root_dir}{snapshot}/{config.SNAPSHOT_FILE_NAME}"
         ):
             (body, _metadata) = ipynb_to_html_exporter.from_filename(snapshot_file)
-        elif os.path.exists(snapshot_file := f"{root}{snapshot}/report.html"):
+        elif os.path.exists(
+            snapshot_file := f"{snapshots_root_dir}{snapshot}/report.html"
+        ):
             with open(snapshot_file) as f:
                 body = f.read()
         else:
-            raise NoSnapShotFile(f"{root}{snapshot}")
+            raise NoSnapShotFile(f"{snapshots_root_dir}{snapshot}")
 
         snapshot_html_cache[snapshot] = body
         return body
 
     @app.route("/list/files")
     def list_files():
-        files = list_snapshotted_files(root)
-        files = [os.path.relpath(e, root) for e in files]
+        files = list_snapshotted_files(snapshots_root_dir)
+        files = [os.path.relpath(e, snapshots_root_dir) for e in files]
         return sorted(files)
 
     @app.route("/list/versions/<path:file>")
     def list_versions(file):
-        versions = get_file_versions_details(os.path.join(root, file))
+        versions = get_file_versions_details(os.path.join(snapshots_root_dir, file))
         versions.sort(key=lambda e: e.snapshot_datetime, reverse=True)
         return versions
 
@@ -106,10 +109,10 @@ def start_browser(root):
     def diff():
         data = request.json
         file_a = os.path.join(
-            config.SNAPSHOTS_DIR, data["baseFile"], data["first"], "snapshot.ipynb"
+            snapshots_root_dir, data["baseFile"], data["first"], "snapshot.ipynb"
         )
         file_b = os.path.join(
-            config.SNAPSHOTS_DIR, data["baseFile"], data["second"], "snapshot.ipynb"
+            snapshots_root_dir, data["baseFile"], data["second"], "snapshot.ipynb"
         )
         cp = subprocess.run(["nbdiff-web", file_a, file_b], check=True)
         return str(cp.returncode == 0)
