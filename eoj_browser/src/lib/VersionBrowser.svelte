@@ -64,6 +64,8 @@
                 baseFile: baseFile,
                 versions: versionsToDelete,
             }),
+        }).then(() => {
+            versions = versions.filter((e) => !e.checked);
         });
     }
 
@@ -81,8 +83,6 @@
                 first: versionsToDiff[0].file_name,
                 second: versionsToDiff[1].file_name,
             }),
-        }).then(() => {
-            versions = versions.filter((e) => !e.checked);
         });
     };
 
