@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import subprocess
 import webbrowser
 from dataclasses import dataclass
@@ -8,7 +9,7 @@ from importlib.resources import files
 from typing import Optional
 
 import waitress
-from flask import Flask, request
+from flask import Flask, make_response, request
 from nbconvert import HTMLExporter
 
 from eyeofjupyter import config
@@ -115,7 +116,17 @@ def start_browser(snapshots_root_dir):
             snapshots_root_dir, data["baseFile"], data["second"], "snapshot.ipynb"
         )
         cp = subprocess.run(["nbdiff-web", file_a, file_b], check=True)
-        return str(cp.returncode == 0)
+        return make_response(cp.stdout, 200 if cp.returncode == 0 else 403)
+
+    @app.delete("/delete")
+    def delete():
+        data = request.json
+        folders_to_delete = [
+            os.path.join(snapshots_root_dir, data["baseFile"], e) for e in data["versions"]
+        ]
+        for folder in folders_to_delete:
+            shutil.rmtree(folder, ignore_errors=False)
+        return make_response("OK", 200)
 
     @app.route("/")
     @app.route("/<path:file>")

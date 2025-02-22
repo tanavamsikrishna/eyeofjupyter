@@ -7,6 +7,7 @@
         Popover,
         Button,
         ButtonGroup,
+        Modal,
     } from "flowbite-svelte";
 
     import dayjs from "dayjs";
@@ -14,6 +15,8 @@
     dayjs.extend(localizedFormat);
 
     export let baseFile: string;
+
+    let askDeleteConfirmation = false;
 
     interface FileVersionDetails {
         file_name: string;
@@ -48,7 +51,21 @@
         numberOfCheckboxesChecked = versions.filter((e) => e.checked).length;
     }
 
-    function handleDelete() {}
+    function handleDelete() {
+        const versionsToDelete = versions
+            .filter((e) => e.checked)
+            .map((e) => e.file_name);
+        fetch(`/delete`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                baseFile: baseFile,
+                versions: versionsToDelete,
+            }),
+        });
+    }
 
     const handleDiff = async () => {
         const versionsToDiff = versions
@@ -64,6 +81,8 @@
                 first: versionsToDiff[0].file_name,
                 second: versionsToDiff[1].file_name,
             }),
+        }).then(() => {
+            versions = versions.filter((e) => !e.checked);
         });
     };
 
@@ -78,7 +97,9 @@
             size="xs"
             pill="true"
             disabled={deleteDisabled}
-            on:click={handleDelete}>Delete</Button
+            on:click={() => {
+                askDeleteConfirmation = true;
+            }}>Delete</Button
         >
         <Button
             size="xs"
@@ -119,6 +140,16 @@
         {/each}
     </Listgroup>
 {/if}
+
+<Modal bind:open={askDeleteConfirmation} autoclose outsideclose size="xs">
+    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+        Are you sure you want to delete these versions?
+    </h3>
+    <svelte:fragment slot="footer">
+        <Button on:click={handleDelete}>Delete</Button>
+        <Button color="alternative">Cancel</Button>
+    </svelte:fragment>
+</Modal>
 
 <style>
     #heading {
