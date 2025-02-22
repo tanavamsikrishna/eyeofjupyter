@@ -64,7 +64,10 @@
                 baseFile: baseFile,
                 versions: versionsToDelete,
             }),
-        }).then(() => {
+        }).then((resp) => {
+            if (resp.status != 200) {
+                return
+            }
             versions = versions.filter((e) => !e.checked);
         });
     }
