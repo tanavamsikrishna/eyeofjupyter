@@ -10,6 +10,9 @@ importers:
       "@sveltejs/vite-plugin-svelte":
         specifier: ^2.5.3
         version: 2.5.3(svelte@4.2.19)(vite@5.4.14)
+      "@trivago/prettier-plugin-sort-imports":
+        specifier: 5.2.2
+        version: 5.2.2(prettier@3.5.2)(svelte@4.2.19)
       "@tsconfig/svelte":
         specifier: ^5.0.4
         version: 5.0.4
@@ -76,6 +79,63 @@ packages:
         integrity: sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==,
       }
     engines: { node: ">=6.0.0" }
+
+  "@babel/code-frame@7.26.2":
+    resolution:
+      {
+        integrity: sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/generator@7.26.9":
+    resolution:
+      {
+        integrity: sha512-kEWdzjOAUMW4hAyrzJ0ZaTOu9OmpyDIQicIh0zg0EEcEkYXZb2TjtBhnHi2ViX7PKwZqF4xwqfAm299/QMP3lg==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/helper-string-parser@7.25.9":
+    resolution:
+      {
+        integrity: sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/helper-validator-identifier@7.25.9":
+    resolution:
+      {
+        integrity: sha512-Ed61U6XJc3CVRfkERJWDz4dJwKe7iLmmJsbOGu9wSloNSFttHV0I8g6UAgb7qnK5ly5bGLPd4oXZlxCdANBOWQ==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/parser@7.26.9":
+    resolution:
+      {
+        integrity: sha512-81NWa1njQblgZbQHxWHpxxCzNsa3ZwvFqpUg7P+NNUU6f3UU2jBEg4OlF/J6rl8+PQGh1q6/zWScd001YwcA5A==,
+      }
+    engines: { node: ">=6.0.0" }
+    hasBin: true
+
+  "@babel/template@7.26.9":
+    resolution:
+      {
+        integrity: sha512-qyRplbeIpNZhmzOysF/wFMuP9sctmh2cFzRAZOn1YapxBsE1i9bJIY586R/WBLfLcmcBlM8ROBiQURnnNy+zfA==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/traverse@7.26.9":
+    resolution:
+      {
+        integrity: sha512-ZYW7L+pL8ahU5fXmNbPF+iZFHCv5scFak7MZ9bwaRPLUhHh7QQEMjZUg0HevihoqCM5iSYHN61EyCoZvqC+bxg==,
+      }
+    engines: { node: ">=6.9.0" }
+
+  "@babel/types@7.26.9":
+    resolution:
+      {
+        integrity: sha512-Y3IR1cRnOxOCDvMmNiym7XpXQ93iGDDPHx+Zj+NM+rg0fBaShfQLkg+hKPaZCEvg5N/LeCo4+Rj/i3FuJsIQaw==,
+      }
+    engines: { node: ">=6.9.0" }
 
   "@esbuild/aix-ppc64@0.21.5":
     resolution:
@@ -572,6 +632,25 @@ packages:
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0 || ^5.0.0-next.0
       vite: ^4.0.0
+
+  "@trivago/prettier-plugin-sort-imports@5.2.2":
+    resolution:
+      {
+        integrity: sha512-fYDQA9e6yTNmA13TLVSA+WMQRc5Bn/c0EUBditUHNfMMxN7M82c38b1kEggVE3pLpZ0FwkwJkUEKMiOi52JXFA==,
+      }
+    engines: { node: ">18.12" }
+    peerDependencies:
+      "@vue/compiler-sfc": 3.x
+      prettier: 2.x - 3.x
+      prettier-plugin-svelte: 3.x
+      svelte: 4.x || 5.x
+    peerDependenciesMeta:
+      "@vue/compiler-sfc":
+        optional: true
+      prettier-plugin-svelte:
+        optional: true
+      svelte:
+        optional: true
 
   "@tsconfig/svelte@5.0.4":
     resolution:
@@ -1082,6 +1161,13 @@ packages:
       }
     deprecated: Glob versions prior to v9 are no longer supported
 
+  globals@11.12.0:
+    resolution:
+      {
+        integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==,
+      }
+    engines: { node: ">=4" }
+
   graceful-fs@4.2.11:
     resolution:
       {
@@ -1174,11 +1260,31 @@ packages:
         integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==,
       }
 
+  javascript-natural-sort@0.7.1:
+    resolution:
+      {
+        integrity: sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==,
+      }
+
   jiti@1.21.7:
     resolution:
       {
         integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==,
       }
+    hasBin: true
+
+  js-tokens@4.0.0:
+    resolution:
+      {
+        integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==,
+      }
+
+  jsesc@3.1.0:
+    resolution:
+      {
+        integrity: sha512-/sM3dO2FOzXjKQhJuo0Q173wf2KOo8t4I8vHy6lF9poUp7bKT0/NHE8fPX23PwfhnykfqnC2xRxOnVw5XuGIaA==,
+      }
+    engines: { node: ">=6" }
     hasBin: true
 
   kleur@4.1.5:
@@ -1212,6 +1318,12 @@ packages:
     resolution:
       {
         integrity: sha512-SW13ws7BjaeJ6p7Q6CO2nchbYEc3X3J6WrmTTDto7yMPqVSZTUyY5Tjbid+Ab8gLnATtygYtiDIJGQRRn2ZOiA==,
+      }
+
+  lodash@4.17.21:
+    resolution:
+      {
+        integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==,
       }
 
   lru-cache@10.4.3:
@@ -2000,6 +2112,51 @@ snapshots:
       "@jridgewell/gen-mapping": 0.3.8
       "@jridgewell/trace-mapping": 0.3.25
 
+  "@babel/code-frame@7.26.2":
+    dependencies:
+      "@babel/helper-validator-identifier": 7.25.9
+      js-tokens: 4.0.0
+      picocolors: 1.1.1
+
+  "@babel/generator@7.26.9":
+    dependencies:
+      "@babel/parser": 7.26.9
+      "@babel/types": 7.26.9
+      "@jridgewell/gen-mapping": 0.3.8
+      "@jridgewell/trace-mapping": 0.3.25
+      jsesc: 3.1.0
+
+  "@babel/helper-string-parser@7.25.9": {}
+
+  "@babel/helper-validator-identifier@7.25.9": {}
+
+  "@babel/parser@7.26.9":
+    dependencies:
+      "@babel/types": 7.26.9
+
+  "@babel/template@7.26.9":
+    dependencies:
+      "@babel/code-frame": 7.26.2
+      "@babel/parser": 7.26.9
+      "@babel/types": 7.26.9
+
+  "@babel/traverse@7.26.9":
+    dependencies:
+      "@babel/code-frame": 7.26.2
+      "@babel/generator": 7.26.9
+      "@babel/parser": 7.26.9
+      "@babel/template": 7.26.9
+      "@babel/types": 7.26.9
+      debug: 4.4.0
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+
+  "@babel/types@7.26.9":
+    dependencies:
+      "@babel/helper-string-parser": 7.25.9
+      "@babel/helper-validator-identifier": 7.25.9
+
   "@esbuild/aix-ppc64@0.21.5":
     optional: true
 
@@ -2218,6 +2375,20 @@ snapshots:
       svelte-hmr: 0.15.3(svelte@4.2.19)
       vite: 5.4.14
       vitefu: 0.2.5(vite@5.4.14)
+    transitivePeerDependencies:
+      - supports-color
+
+  "@trivago/prettier-plugin-sort-imports@5.2.2(prettier@3.5.2)(svelte@4.2.19)":
+    dependencies:
+      "@babel/generator": 7.26.9
+      "@babel/parser": 7.26.9
+      "@babel/traverse": 7.26.9
+      "@babel/types": 7.26.9
+      javascript-natural-sort: 0.7.1
+      lodash: 4.17.21
+      prettier: 3.5.2
+    optionalDependencies:
+      svelte: 4.2.19
     transitivePeerDependencies:
       - supports-color
 
@@ -2532,6 +2703,8 @@ snapshots:
       once: 1.4.0
       path-is-absolute: 1.0.1
 
+  globals@11.12.0: {}
+
   graceful-fs@4.2.11: {}
 
   hasown@2.0.2:
@@ -2577,7 +2750,13 @@ snapshots:
     optionalDependencies:
       "@pkgjs/parseargs": 0.11.0
 
+  javascript-natural-sort@0.7.1: {}
+
   jiti@1.21.7: {}
+
+  js-tokens@4.0.0: {}
+
+  jsesc@3.1.0: {}
 
   kleur@4.1.5: {}
 
@@ -2588,6 +2767,8 @@ snapshots:
   load-tsconfig@0.2.5: {}
 
   locate-character@3.0.0: {}
+
+  lodash@4.17.21: {}
 
   lru-cache@10.4.3: {}
 
