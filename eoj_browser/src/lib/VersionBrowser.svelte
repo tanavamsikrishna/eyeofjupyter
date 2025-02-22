@@ -111,7 +111,7 @@
             </ListgroupItem>
             {#if version.comment}
                 <Popover placement="left">
-                    <div style="max-width: 20rem;">
+                    <div style="max-width: 20rem; word-wrap: break-word">
                         {version.comment}
                     </div>
                 </Popover>
