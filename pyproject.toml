@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "eyeofjupyter"
-version = "0.1.8"
+version = "0.1.11"
 description = ""
 authors = ["Vamsi Talupula <tanavamsikrishna@outlook.com>"]
 readme = "README.md"

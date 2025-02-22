@@ -65,6 +65,7 @@
                 versions: versionsToDelete,
             }),
         }).then((resp) => {
+            resp.text().then((e) => console.log(e));
             if (resp.status != 200) {
                 return
             }

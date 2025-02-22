@@ -116,13 +116,19 @@ def start_browser(snapshots_root_dir):
             snapshots_root_dir, data["baseFile"], data["second"], "snapshot.ipynb"
         )
         cp = subprocess.run(["nbdiff-web", file_a, file_b], check=True)
-        return make_response(cp.stdout, 200 if cp.returncode == 0 else 403)
+        return_data = []
+        if cp.stdout is not None:
+            return_data.append(cp.stdout.decode("utf-8"))
+        if cp.stderr is not None:
+            return_data.append(cp.stderr.decode("utf-8"))
+        return make_response("\n".join(return_data), 200 if cp.returncode == 0 else 403)
 
     @app.delete("/delete")
     def delete():
         data = request.json
         folders_to_delete = [
-            os.path.join(snapshots_root_dir, data["baseFile"], e) for e in data["versions"]
+            os.path.join(snapshots_root_dir, data["baseFile"], e)
+            for e in data["versions"]
         ]
         for folder in folders_to_delete:
             shutil.rmtree(folder, ignore_errors=False)
