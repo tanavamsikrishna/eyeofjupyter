@@ -1,1 +1,5 @@
-interface SnapshotFile { name: string; href: string; current: boolean };
+interface SnapshotFile {
+  name: string;
+  href: string;
+  current: boolean;
+}

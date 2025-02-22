@@ -1,7 +1,13 @@
 <script lang="ts">
-    import { NavBrand, Navbar, type ListGroupItemType } from "flowbite-svelte";
+    import {
+        Button,
+        NavBrand,
+        Navbar,
+        type ListGroupItemType,
+    } from "flowbite-svelte";
     import FileBrowser from "./lib/FileBrowser.svelte";
     import VersionBrowser from "./lib/VersionBrowser.svelte";
+
 
     let selectedFile: string | null = null;
 </script>
